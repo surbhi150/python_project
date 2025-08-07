@@ -1,8 +1,9 @@
 import streamlit as st
+import Total_Charts
+import Explore_Data
 import pandas as pd
 import plotly.express as px
-import Total Charts.py
-import Explore Data.py
+
 
 
 # --- Page Configuration ---
@@ -99,4 +100,5 @@ if not df.empty:
 
 else:
     st.warning("The dataset could not be loaded. Please check the file and try again.")
+
 
