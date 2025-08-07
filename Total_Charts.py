@@ -8,9 +8,10 @@ import load_data
 
 # Load the data
 def load_data():
-    import pandas as pd
-    df = pd.read_csv("final_dataset.csv")  # Or however you're loading the data
-    return df
+    try:
+        df = pd.read_csv("final_dataset.csv")
+        df.columns = df.columns.str.strip().str.replace(r"\s+", "_", regex=True)
+        return df
 
 st.title("📈 Visual Analysis: Max Chart")
 
@@ -73,6 +74,7 @@ if show_chart:
 
 else:
     st.info("Click the button in the sidebar to display the charts.")
+
 
 
 
