@@ -4,14 +4,10 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.figure_factory as ff
-import load_data
+from utils.load_data import load_data
 
 # Load the data
-def load_data():
-    try:
-        df = pd.read_csv("final_dataset.csv")
-        df.columns = df.columns.str.strip().str.replace(r"\s+", "_", regex=True)
-        return df
+df = load_data()
 
 st.title("📈 Visual Analysis: Max Chart")
 
@@ -74,6 +70,7 @@ if show_chart:
 
 else:
     st.info("Click the button in the sidebar to display the charts.")
+
 
 
 
