@@ -4,7 +4,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import plotly.figure_factory as ff
-from load_data import load_data
+import load_data
 
 # Load the data
 df = load_data()
@@ -70,4 +70,5 @@ if show_chart:
 
 else:
     st.info("Click the button in the sidebar to display the charts.")
+
 
