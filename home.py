@@ -2,8 +2,26 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-# --- Page Configuration ---
-st.set_page_config(layout="wide", page_title="🏥 Health Center Data Dashboard")
+# --- Page Configuration (MUST be first) ---
+st.set_page_config(
+    layout="wide", 
+    page_title="🏥 Health Center Data Dashboard",
+    page_icon="🏥",
+    initial_sidebar_state="expanded"
+)
+
+# --- CSS Fix for Full Width Display ---
+st.markdown("""
+<style>
+.main .block-container {
+    max-width: 100%;
+    padding-top: 1rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
+    padding-bottom: 1rem;
+}
+</style>
+""", unsafe_allow_html=True)
 
 # --- Load Data Function with Caching ---
 @st.cache_data
@@ -34,7 +52,10 @@ if not df.empty:
     states = sorted(df['State'].dropna().unique())
     operated_by = sorted(df['Operated_By'].dropna().unique())
 
-    selected_states = st.sidebar.multiselect("Select State(s)", options=states, default=states)
+    # Performance improvement: limit default selections for large datasets
+    default_states = states[:10] if len(states) > 10 else states
+    
+    selected_states = st.sidebar.multiselect("Select State(s)", options=states, default=default_states)
     selected_operated_by = st.sidebar.multiselect("Select Operated By", options=operated_by, default=operated_by)
 
     # --- Apply Filters ---
@@ -45,7 +66,12 @@ if not df.empty:
 
     # --- Data Preview ---
     st.subheader("🔍 Filtered Data Preview")
-    st.dataframe(filtered_df, use_container_width=True)
+    # Performance improvement: limit displayed rows for better loading
+    display_df = filtered_df.head(1000) if len(filtered_df) > 1000 else filtered_df
+    st.dataframe(display_df, use_container_width=True)
+    
+    if len(filtered_df) > 1000:
+        st.info(f"Showing first 1000 rows of {len(filtered_df)} total records")
 
     # --- Download Button ---
     csv = filtered_df.to_csv(index=False).encode('utf-8')
@@ -67,6 +93,8 @@ if not df.empty:
             color='Count',
             template='plotly_white'
         )
+        # Ensure proper sizing
+        fig_state.update_layout(height=500)
         st.plotly_chart(fig_state, use_container_width=True)
     else:
         st.info("No data to display for the selected State filter.")
@@ -87,6 +115,8 @@ if not df.empty:
             color='Count',
             template='plotly_white'
         )
+        # Ensure proper sizing
+        fig_op.update_layout(height=500)
         st.plotly_chart(fig_op, use_container_width=True)
     else:
         st.info("No data to display for the selected 'Operated By' filter.")
