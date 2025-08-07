@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import Total Charts.py
+import Explore Data.py
+
 
 # --- Page Configuration ---
 st.set_page_config(layout="wide", page_title="🏥 Health Center Data Dashboard")
@@ -96,3 +99,4 @@ if not df.empty:
 
 else:
     st.warning("The dataset could not be loaded. Please check the file and try again.")
+
