@@ -10,8 +10,7 @@ def load_data(file_path="final_dataset.csv"):
     - Raises informative exceptions.
     """
     try:
-        df = pd.read_csv(file_path)
-
+        df = pd.read_csv("final_dataset.csv")
         # Clean column names
         df.columns = (
             df.columns
@@ -28,3 +27,4 @@ def load_data(file_path="final_dataset.csv"):
         raise ValueError(f"❌ File is empty: {file_path}")
     except Exception as e:
         raise Exception(f"❌ Failed to load data: {e}")
+
